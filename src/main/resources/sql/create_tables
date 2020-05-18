@@ -1,0 +1,25 @@
+CREATE TABLE Clients (
+    id BIGINT IDENTITY PRIMARY KEY,
+    firstName VARCHAR(255) NOT NULL,
+    middleName VARCHAR(255) NOT NULL,
+    lastName VARCHAR(255) NOT NULL,
+    phoneNumber VARCHAR(255) NOT NULL);
+
+CREATE TABLE Mechanics (
+    id BIGINT IDENTITY PRIMARY KEY,
+    firstName VARCHAR(255) NOT NULL,
+    middleName VARCHAR(255) NOT NULL,
+    lastName VARCHAR(255) NOT NULL,
+    hourlyWage BIGINT NOT NULL);
+
+CREATE TABLE Orders (
+    id BIGINT IDENTITY PRIMARY KEY,
+    description VARCHAR(512),
+    dateStart DATE NOT NULL,
+    dateEnd DATE NOT NULL,
+    clientID BIGINT NOT NULL,
+    mechanicID BIGINT NOT NULL,
+    price BIGINT NOT NULL,
+    status VARCHAR(16),
+    FOREIGN KEY (clientID) REFERENCES Clients(id),
+    FOREIGN KEY (mechanicID) REFERENCES Mechanics(id));
