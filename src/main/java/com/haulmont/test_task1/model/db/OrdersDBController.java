@@ -108,12 +108,12 @@ public class OrdersDBController extends AbstractDBController<Order, Long> {
         try {
             sendQuery("INSERT INTO Orders (description, dateStart, dateEnd, clientID, mechanicID, price, status) values ('"
                     + entity.getDescription()
-                    + ", DATE '" + (new SimpleDateFormat("yyyy-MM-dd").format(entity.getDateStart()))
-                    + ", DATE '" + (new SimpleDateFormat("yyyy-MM-dd").format(entity.getDateEnd())) + "', "
+                    + "', DATE '" + (new SimpleDateFormat("yyyy-MM-dd").format(entity.getDateStart()))
+                    + "', DATE '" + (new SimpleDateFormat("yyyy-MM-dd").format(entity.getDateEnd())) + "', "
                     + entity.getClientID() + ", "
                     + entity.getMechanicID() + ", "
-                    + entity.getPrice() + ", "
-                    + entity.getStatus().toString() + ")"
+                    + entity.getPrice() + ", '"
+                    + entity.getStatus().toString() + "')"
             );
             return true;
         } catch (SQLException e) {

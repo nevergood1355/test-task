@@ -19,8 +19,4 @@ public class Mechanic extends Human implements Serializable {
         this.hourlyWage = hourlyWage;
     }
 
-    public String toString() {
-        return (getId() + 1) + ")"
-                + getLastName() + " " + getFirstName().charAt(0) + ". " + getMiddleName().charAt(0) + ".  wage: " + hourlyWage;
-    }
 }

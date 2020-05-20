@@ -66,5 +66,9 @@ public abstract class Human extends AbstractEntity {
         }
         return false;
     }
+
+    public String toString() {
+        return getLastName() + " " + getFirstName().charAt(0) + ". " + getMiddleName().charAt(0);
+    }
 }
 

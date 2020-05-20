@@ -17,6 +17,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Theme(ValoTheme.THEME_NAME)
 public class MainUI extends UI {
@@ -72,13 +73,21 @@ public class MainUI extends UI {
         });
 
         delButton.addClickListener(clickEvent -> {
+            AtomicBoolean canDelete = new AtomicBoolean(true);
             if ((clientGrid.getSelectionModel().getFirstSelectedItem().isPresent())) {
                 Client selectItem = clientGrid.getSelectionModel().getFirstSelectedItem().get();
                 DeleteDialog<Client> dialog = new DeleteDialog<>(selectItem, client -> {
-                    clients.delete(client.getId());
-                    clientGrid.setItems(clients.getAll());
+                    if (clients.delete(client.getId())) {
+                        clientGrid.setItems(clients.getAll());
+                    } else {
+                        canDelete.set(false);
+                        new ErrorMessage(new Exception("This client has order. Delete the order first"));
+                    }
                 });
-                addWindow(dialog);
+                if (canDelete.get()) {
+                    addWindow(dialog);
+                }
+
             }
         });
 
@@ -125,13 +134,20 @@ public class MainUI extends UI {
         });
 
         delButton.addClickListener(clickEvent -> {
+            AtomicBoolean canDelete = new AtomicBoolean(true);
             if ((mechanicGrid.getSelectionModel().getFirstSelectedItem().isPresent())) {
                 Mechanic selectItem = mechanicGrid.getSelectionModel().getFirstSelectedItem().get();
                 DeleteDialog<Mechanic> dialog = new DeleteDialog<>(selectItem, mechanic -> {
-                    mechanics.delete(mechanic.getId());
-                    mechanicGrid.setItems(mechanics.getAll());
+                    if (mechanics.delete(mechanic.getId())) {
+                        mechanicGrid.setItems(mechanics.getAll());
+                    } else {
+                        canDelete.set(false);
+                        new ErrorMessage(new Exception("This mechanic has order. Delete the order first"));
+                    }
                 });
-                addWindow(dialog);
+                if (canDelete.get()) {
+                    addWindow(dialog);
+                }
             }
         });
 
@@ -165,7 +181,7 @@ public class MainUI extends UI {
         orderGrid.addColumn(Order::getPrice).setCaption("Price");
         orderGrid.addColumn(Order::getStatus).setCaption("Status");
         orderGrid.setSizeFull();
-        Layout functionalLayout = new HorizontalLayout();
+        HorizontalLayout functionalLayout = new HorizontalLayout();
 
         Button addButton = new Button("Add");
         Button editButton = new Button("Edit");
@@ -202,7 +218,7 @@ public class MainUI extends UI {
         });
 
         TextField filterDescField = new TextField();
-        filterDescField.setPlaceholder("filterByDescription by Description");
+        filterDescField.setPlaceholder("filter by desc.");
         NativeSelect<Client> clientSelector = new NativeSelect<>("Client: ");
         clientSelector.setItems(clients.getAll());
         NativeSelect<Status> statusSelector = new NativeSelect<>("Status:");
@@ -249,6 +265,14 @@ public class MainUI extends UI {
 
         functionalLayout.addComponents(addButton, editButton, delButton,
                 filterDescField, clientSelector, statusSelector, filterButton);
+
+        functionalLayout.setComponentAlignment(addButton, Alignment.MIDDLE_CENTER);
+        functionalLayout.setComponentAlignment(editButton, Alignment.MIDDLE_CENTER);
+        functionalLayout.setComponentAlignment(delButton, Alignment.MIDDLE_CENTER);
+        functionalLayout.setComponentAlignment(filterDescField, Alignment.MIDDLE_CENTER);
+        functionalLayout.setComponentAlignment(clientSelector, Alignment.TOP_CENTER);
+        functionalLayout.setComponentAlignment(statusSelector, Alignment.TOP_CENTER);
+        functionalLayout.setComponentAlignment(filterButton, Alignment.MIDDLE_CENTER);
 
 
         Layout l = new VerticalLayout();

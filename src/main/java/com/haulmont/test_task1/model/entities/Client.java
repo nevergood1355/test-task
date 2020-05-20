@@ -18,8 +18,4 @@ public class Client extends Human implements Serializable {
         return phoneNumber;
     }
 
-    public String toString() {
-        return (getId() + 1) + ")"
-                + getLastName() + " " + getFirstName().charAt(0) + ". " + getMiddleName().charAt(0) + ". phone: " + phoneNumber;
-    }
 }

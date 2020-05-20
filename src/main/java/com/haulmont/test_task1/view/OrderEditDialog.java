@@ -45,7 +45,7 @@ class OrderEditDialog extends Window {
         dateStartField.setValue(LocalDate.now());
         dateEndField.setValue(LocalDate.now());
         statusSelector.setItems(Status.values());
-        priceField.setPlaceholder("days before expired");
+        priceField.setPlaceholder("Order Price");
 
         VerticalLayout leftLayout = new VerticalLayout(clientSelector, mechanicSelector, description);
         VerticalLayout rightLayout = new VerticalLayout(dateStartField, dateEndField, priceField, statusSelector);
